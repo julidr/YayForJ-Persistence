@@ -10,7 +10,79 @@ Muchos de los requerimientos ya vienen incluidos en el POM del proyecto, asi que
 * Mysql-Connector-Java
   * Version: 5.1.6
 
-## Funcionamiento [![yayForJicon3](readmeStyle/yayForJDependencyMini.png)]
+## Funcionamiento [![yayForJicon4](readmeStyle/yayForJCodeMini.png)](https://github.com/julidr/YayForJ-Persistence/blob/master/yaytest.sql)
+
+Lo primero que se debe hacer para poder utilizar el proyecto de manera correcta, es crear los modelos que representan las entidades de la base de datos. Para este caso se creara la clase Trainer.
+
+```sh
+@Entity
+@Table(name="trainers")
+public class Trainer {
+	
+	@Id private int id;
+	private String name;
+	private String lastname;
+	private int age;
+	private Date birthday;
+	
+	public int getId() {
+		return id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getLastname() {
+		return lastname;
+	}
+	
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+	
+	public int getAge() {
+		return age;
+	}
+	
+	public void setAge(int age) {
+		this.age = age;
+	}
+	
+	public Date getBirthday() {
+		return birthday;
+	}
+	
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
+
+	@Override
+	public String toString() {
+		return "Trainer [id=" + id + ", name=" + name + ", lastname=" + lastname + ", age=" + age + ", birthday="
+				+ birthday + "]";
+	}
+}
+```
+Lo destacable de esta clase son sus anotaciones:
+
+* Entity
+ * Esta anotación le indica al programa, que es la representante de una entidad en la base de datos. Si no se coloca se lanzara una excepción.
+
+* Table
+ * Esta anotación le indica el nombre de la tabla en la base de datos. En este caso, pese a que la clase se llama Trainer, en la base de datos, la tabla va en plurar y se llama trainers. Por lo que se indica el nombre de la tabla para buscar la referencia correcta. Si falta esta anotación el programa lanza una excepcion.
+
+* Id
+ * Esta anotación le indica al programa quien es el id de la clase. Si falta esta anotacion el programa lanza una excepcion.
+ 
 Lo primero que se debe hacer para poder utilizar el proyecto es crear una instancia de YayPersistence en donde se ingresan los parametros de la base de datos.
 
 En este caso hare el ejemplo del funcionamiento con la base de datos [YayTest](https://github.com/julidr/YayForJ-Persistence/blob/master/yaytest.sql).
