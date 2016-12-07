@@ -150,8 +150,8 @@ TrainerDAO trainerDAO= new TrainerDAO();
    
 * Save
  * Permite insertar un objeto de una clase en especifico a la base de datos.
-   ```sh
-	Trainer trainer2= new Trainer();
+ ```sh
+      Trainer trainer2= new Trainer();
         trainer2.setName("Natalia");
         trainer2.setLastname("Diaz");
         trainer2.setAge(18);
@@ -163,6 +163,39 @@ TrainerDAO trainerDAO= new TrainerDAO();
   <img src="readmeStyle/yaySave.PNG"/> <br>
   Y se puede visualizar la inserción en la base de datos directamente. <br>
   <img src="readmeStyle/dataBaseAll.PNG"/>
+  
+* Update
+ * Permite actualizar un objeto de una clase en especifico a la base de datos.
+ ```sh
+	trainer.setName("Juli");
+        trainerDAO.update(trainer, Trainer.class);
+```
+  Si la actualizacion en la base de datos funciona sin problemas, se muestra la setencia SQL que se implemento para actualizar el objeto a la base de datos. <br>
+  <img src="readmeStyle/yayUpdate.PNG"/> <br>
+  Y se puede visualizar la actualización en la base de datos directamente. <br>
+  <img src="readmeStyle/dataBaseUpdate.PNG"/>
+  
+* Delete
+ * Permite eliminar un objeto de una clase en especifico de la base de datos.
+ ```sh
+	trainerDAO.delete(trainer, Trainer.class);
+```
+  Si la eliminación en la base de datos funciona sin problemas, se muestra la setencia SQL que se implemento para eliminar el objeto de la base de datos. <br>
+  <img src="readmeStyle/dataBaseDelete.PNG"/> <br>
+  Y se puede visualizar la Eliminación en la base de datos directamente (Le volvi a cambiar el nombre a Juliana). <br>
+  <img src="readmeStyle/dataBaseAll.PNG"/>
+  
+* FindByX
+ * Devuelve un ArrayList de objetos segun la clase, columna y valor especificados.
+  ```sh
+	ArrayList<Trainer> trainersList2=trainerDAO.findByX(Trainer.class, "name", "Juliana");
+        System.out.println("Tamaño: " + trainersList2.size());
+        for(int i=0; i<trainersList2.size(); i++){
+        	System.out.println(trainersList2.get(i));
+        }
+```
+  El arrayList contiene todos los objetos de Trainer que se encontraron en la base de datos con la referencia en columna y valor dichos. <br>
+   <img src="readmeStyle/yayFindByX.PNG"/>
 
 ## Contenido del Proyecto [![yayForJicon](readmeStyle/yayForJDependencyMini.png)](https://github.com/julidr/YayForJ-Persistence/tree/master/src/main/java/co/edu/usa/adf/YayForJ_Persistencel)
 El contenido del proyecto es bastante simple, considerando que la mayoria de archivos son generados por eclipse y maven para que el proyecto funcione. Por lo que me limitare a explicar los archivos importantes del proyecto, tales como el Pom, los paquetes y algunas clases.
@@ -181,3 +214,8 @@ El contenido del proyecto es bastante simple, considerando que la mayoria de arc
 * Dao
  * Es el paquete que contiene el DAO generico. El cual es una simple clase abstracta que permite la implementación de metodos tales con FindById, FindAll, Save, Update, Delete y FindByX. <br>
  <img src="readmeStyle/dao.PNG" align="center" />
+ 
+## Mejoras y Contacto [![yayForJicon](readmeStyle/yayForJDependencyMini.png)](https://github.com/julidr/YayForJ-Persistence)
+Hay muchas cosas por mejorar para este componente. YayForJ Persistence es solo una parte de un gran framework que se realizo con la ayuda de dos amigos más. Sin embargo, si quieren realizar cualquier tipo de mejora a este componente bien pueden hacerlo. <br><br>
+Mi email de contacto es juli.milena@hotmail.com por si quieren discutir cualquier cosa del proyecto. <br><br>
+En un futuro subire tanto el modulo, como el Framework completo a Maven Central para que puedan descargarlo como una libreria más.
