@@ -21,7 +21,6 @@ public class App
     public static void main( String[] args ) throws InstantiationException, IllegalAccessException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException, AnnotationException, ParseException
     {
     	YayPersistence persistenceController= new YayPersistence("jdbc:mysql://localhost:3306/yaytest", "root", "");
-        System.out.println( "Hello World!" );
         TrainerDAO trainerDAO= new TrainerDAO();
         PokemonDAO pokemonDAO= new PokemonDAO();
         

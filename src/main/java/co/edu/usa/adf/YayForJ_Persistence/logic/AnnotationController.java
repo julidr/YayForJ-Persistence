@@ -1,5 +1,8 @@
 package co.edu.usa.adf.YayForJ_Persistence.logic;
 
+/**Clase encargada de administrar el momento en que se leen las anotaciones.
+ * @author Juliana Diaz
+ * */
 public class AnnotationController {
 
 	private AnnotationReader annotationReader;
@@ -9,6 +12,8 @@ public class AnnotationController {
 		readAnnotations(clase);
 	}
 	
+	/**Metodo que empieza con la lecturas de anotaciones de la clase. Recibe un Class<?>
+	 * y se encarga de verificar que el proceso de lectura de anotaciones se haga correctamente.*/
 	private void readAnnotations(Class<?> clase) throws AnnotationException{
 		annotationReader.classAnnotationReader(clase);
 		if(annotationReader.getIsEntity()==true){
@@ -18,10 +23,15 @@ public class AnnotationController {
 		}
 	}
 	
+	/**Retorna un String con el nombre de la tabla
+	 * @return tableName*/
 	public String getTableName(){
 		return annotationReader.getTableName();
 	}
 	
+	
+	/**Retorna un String con el nombre del campo que tiene el id
+	 * @return fieldIdName*/
 	public String getFieldIdName(){
 		return annotationReader.getFieldIdName();
 	}

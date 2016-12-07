@@ -9,6 +9,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+/**Clase que se encarga de construir los metodos basicos de un DAO con la informacion obtenida del
+ * Class<?> que se esta manejando.
+ * @author Juliana Diaz
+ * */
 public class ClassBuilder {
 	
 	private AnnotationController annotationController;
@@ -20,14 +24,20 @@ public class ClassBuilder {
 		allObjects= new ArrayList<Object>();
 	}
 	
+	/**Retorna un String con el nombre del campo que tiene el id
+	 * @return fieldIdName*/
 	public String getFieldIdName(){
 		return annotationController.getFieldIdName();
 	}
 	
+	/**Retorna un String con el nombre de la tabla
+	 * @return tableName*/
 	public String getTableName(){
 		return annotationController.getTableName();
 	}
 	
+	/**Metodo que se encarga de crear un objeto basado en el resultado dado por la base de datos.
+	 * Recibe un Class<?> y el ResultSet de JDBC.*/
 	public Object createObject(Class<?> clase, ResultSet result) throws InstantiationException, IllegalAccessException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException, ParseException, SQLException{
 		Object object =clase.newInstance();
 		fields= clase.getDeclaredFields();
@@ -41,6 +51,8 @@ public class ClassBuilder {
 		return object;
 	}
 	
+	/**Metodo que se encarga de devolver una lista de objetos basada en los resultados dada
+	 * por la base de datos. Recibe un Class<?> y el ResultSet de JDBC*/
 	public ArrayList<Object> findAllObjects(Class<?> clase, ResultSet result) throws InstantiationException, IllegalAccessException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException, SQLException, ParseException{
 		allObjects= new ArrayList<Object>();
 		Object object= null;
@@ -57,6 +69,9 @@ public class ClassBuilder {
 		return allObjects;
 	}
 	
+	/**Metodo que se encarga de construir la setencia SQL para insertar un objeto en la base
+	 * de datos. Recibe un Class<?> y el objeto que se va a insertar y devuelve un String con 
+	 * la sentencia.*/
 	public String createInsert(Class<?> clase, Object object) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		fields= clase.getDeclaredFields();
 		String get="get";
@@ -87,6 +102,9 @@ public class ClassBuilder {
 		return sql;
 	}
 	
+	/**Metodo que se encarga de construir la setencia SQL para actualizar un objeto en la base
+	 * de datos. Recibe un Class<?> y el objeto que se va a actualizar y devuelve un String con 
+	 * la sentencia.*/
 	public String createUpdate(Class<?> clase, Object object) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		fields= clase.getDeclaredFields();
 		String get="get";
@@ -113,6 +131,9 @@ public class ClassBuilder {
 		return sql;
 	}
 	
+	/**Metodo que se encarga de construir la setencia SQL para borrar un objeto en la base
+	 * de datos. Recibe un Class<?> y el objeto que se va a borrar y devuelve un String con 
+	 * la sentencia.*/
 	public String createDelete(Class<?> clase, Object object) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		String get="get";
 		String sql= "delete from " + getTableName() + " where " + getFieldIdName();
@@ -121,7 +142,10 @@ public class ClassBuilder {
 		return sql;
 	}
 	
-	
+	/**Metodo que se encarga de hacer el cast de los resultados de la base de datos para 
+	 * la implementacion de los metodos de la clase.
+	 * Solo funciona con los tipos basicos de Java tales como String, Integer, Double, Long, 
+	 * Float, Boolean y Date.*/
 	public void implementsMethod(Object nn,Method method,String attribute, String type) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, ParseException{
 		if(type.equals("java.lang.String")){
 			method.invoke(nn,attribute);
@@ -158,6 +182,7 @@ public class ClassBuilder {
 		}
 	}
 	
+	/**Metodo simple que coge la primera letra de un String y la pone en mayuscula*/
 	public String transformToUppercase(String attribute){
 		String inicial= attribute.substring(0,1).toUpperCase();
 		attribute=inicial+attribute.substring(1, attribute.length());
