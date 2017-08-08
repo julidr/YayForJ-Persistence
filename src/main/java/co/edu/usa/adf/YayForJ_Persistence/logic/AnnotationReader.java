@@ -8,6 +8,7 @@ import co.edu.usa.adf.YayForJ_Persistence.annotation.Column;
 import co.edu.usa.adf.YayForJ_Persistence.annotation.Entity;
 import co.edu.usa.adf.YayForJ_Persistence.annotation.Id;
 import co.edu.usa.adf.YayForJ_Persistence.annotation.Table;
+import org.apache.log4j.Logger;
 
 /**Clase encargada de leer las anotaciones Entity, Table e Id de una clase modelo.
  * @author Juliana Diaz
@@ -22,6 +23,7 @@ public class AnnotationReader {
 	private boolean isAutoincremental;
 	private ArrayList<String> columnsName;
 	private boolean hasAllColumns;
+    final static Logger logger = Logger.getLogger(AnnotationReader.class);
 
 	public AnnotationReader(){
         isEntity=false;
@@ -46,14 +48,17 @@ public class AnnotationReader {
                         fieldAnnotationReader(clase);
                     }
                     else{
+                        logger.error("Class "+clase.getName()+" doesn't have a Table Annotation");
                         throw new AnnotationException("Class "+clase.getName()+" doesn't have a Table Annotation");
                     }
                 }catch (ArrayIndexOutOfBoundsException e){
+                    logger.error("Class "+clase.getName()+" doesn't have a Table Annotation");
 				    throw new AnnotationException("Class "+clase.getName()+" doesn't have a Table Annotation");
                 }
 				break;
 			}
 			else{
+                logger.error("Class "+clase.getName()+" doesn't have an Entity Annotation");
 				throw new AnnotationException("Class "+clase.getName()+" doesn't have an Entity Annotation");
 			}
 		}
@@ -79,8 +84,10 @@ public class AnnotationReader {
 		}
         if(columnsName.size()!=fields.length && hasId==true){
             hasAllColumns = false;
+            logger.error("Some fields in your class "+clase.getName()+" don't have a Column annotation");
             throw new AnnotationException("Some fields in your class "+clase.getName()+" don't have a Column annotation");
         } else if(hasId==false){
+            logger.error("Table doesn't have an Id");
             throw new AnnotationException("Table doesn't have an Id");
         }
 	}

@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * @version 1.0
  * */
 public class ClassBuilder {
-	
+
 	private AnnotationController annotationController;
 	private ArrayList<Object> allObjects;
 	private Field[] fields;

@@ -1,5 +1,7 @@
 package co.edu.usa.adf.YayForJ_Persistence.logic;
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 
 /**Clase encargada de administrar el momento en que se leen las anotaciones.
@@ -9,6 +11,7 @@ import java.util.ArrayList;
 public class AnnotationController {
 
 	private AnnotationReader annotationReader;
+    final static Logger logger = Logger.getLogger(AnnotationController.class);
 	
 	public AnnotationController(Class<?> clase) throws AnnotationException {
 		annotationReader= new AnnotationReader();
@@ -22,7 +25,7 @@ public class AnnotationController {
 		if(annotationReader.getIsEntity()==true){
 			if(annotationReader.getHasId()==true){
 			    if(annotationReader.getHasAllColumns()==true){
-                    System.out.println("Class has been readed without problems");
+			        logger.info("Class has been readed without problems");
                 }
 			}
 		}

@@ -1,5 +1,7 @@
 package co.edu.usa.adf.YayForJ_Persistence.logic;
 
+import org.apache.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -12,34 +14,32 @@ import java.sql.SQLException;
 public class YayPersistence {
 	
 	private static Connection connection= null;
+    final static Logger logger = Logger.getLogger(YayPersistence.class);
 	
 	public YayPersistence(String database, String user, String password){
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			connection= DriverManager.getConnection(database, user, password);
 			if(connection!=null){
-				System.out.println("You are connected");
+			    logger.info("You are connected");
 			}
 			else{
-				System.out.println("Sorry, you failed to make connection!");
+			    logger.error("Sorry, you failed to make connection!");
 			}
 		} catch (ClassNotFoundException e) {
-			System.out.println("Your JDBC Driver is missing");
-			e.printStackTrace();
+		    logger.error("Your JDBC Driver is missing: " + e);
 			return;
 		} catch (SQLException e) {
-			System.out.println("Connection failed!");
-			e.printStackTrace();
+		    logger.error("Connection failed! " + e);
 		}
 	}
 	
 	public static void closeConnection(){
 		try {
 			connection.close();
-			System.out.println("Bye Bye");
+			logger.info("Bye Bye...Closing Connection");
 		} catch (SQLException e) {
-			System.out.println("ups! we couldn't close the connection");
-			e.printStackTrace();
+		    logger.error("ups! we couldn't close the connection: " + e);
 		}
 	}
 	

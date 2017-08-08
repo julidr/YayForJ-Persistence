@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import co.edu.usa.adf.YayForJ_Persistence.logic.AnnotationException;
 import co.edu.usa.adf.YayForJ_Persistence.logic.ClassBuilder;
 import co.edu.usa.adf.YayForJ_Persistence.logic.YayPersistence;
+import org.apache.log4j.Logger;
 
 /**Clase que se encarga de construir los metodos basicos de un DAO con la informacion obtenida del
  * Class<?> que se esta manejando.
@@ -18,7 +19,8 @@ import co.edu.usa.adf.YayForJ_Persistence.logic.YayPersistence;
  * @version 1.0
  * */
 public abstract class DAOGenerator<T> {
-	
+
+    final static Logger logger = Logger.getLogger(DAOGenerator.class);
 	private ClassBuilder classBuilder= new ClassBuilder();
 	
 	/**Metodo que permite buscar un Objeto en la base de datos en base al Id.
@@ -34,11 +36,11 @@ public abstract class DAOGenerator<T> {
 			Statement statement= connection.createStatement();
 			String sql= "select * from "+ classBuilder.getTableName() 
 							+ " where id='"+id+"';";
+            logger.info(sql);
 			ResultSet result= statement.executeQuery(sql);
 			object= (T) classBuilder.createObject(clase, result);
 		} catch (SQLException e) {
-			System.out.println("ups! something happened");
-			e.printStackTrace();
+			logger.error(e);
 		}
 		return object;
 	}
@@ -55,11 +57,11 @@ public abstract class DAOGenerator<T> {
 		try {
 			Statement statement= connection.createStatement();
 			String sql= "select * from "+ classBuilder.getTableName();
+            logger.info(sql);
 			ResultSet result= statement.executeQuery(sql);
 			findAllList= (ArrayList<T>) classBuilder.findAllObjects(clase, result);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+            logger.error(e);
 		}
 		return findAllList;
 	}
@@ -73,11 +75,11 @@ public abstract class DAOGenerator<T> {
 			Statement statement= connection.createStatement();
 			Object object= t;
 			String sql= classBuilder.createInsert(clase, object);
-			System.out.println(sql);
+			logger.info(sql);
 			statement.executeUpdate(sql);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+            logger.error(e);
 		}
 	}
 	
@@ -90,11 +92,10 @@ public abstract class DAOGenerator<T> {
 		try {
 			Statement statement= connection.createStatement();
 			String sql= classBuilder.createUpdate(clase, object);
-			System.out.println(sql);
+			logger.info(sql);
 			statement.executeUpdate(sql);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+            logger.error(e);
 		}
 	}
 	
@@ -107,11 +108,10 @@ public abstract class DAOGenerator<T> {
 		try {
 			Statement statement= connection.createStatement();
 			String sql= classBuilder.createDelete(clase, object);
-			System.out.println(sql);
+			logger.info(sql);
 			statement.executeUpdate(sql);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+            logger.error(e);
 		}
 	}
 	
@@ -128,12 +128,11 @@ public abstract class DAOGenerator<T> {
 			Statement statement= connection.createStatement();
 			String sql= "select * from "+ classBuilder.getTableName() + 
 					" where " + column +"='"+value+"'";
-			System.out.println(sql);
+			logger.info(sql);
 			ResultSet result= statement.executeQuery(sql);
 			findAllList= (ArrayList<T>) classBuilder.findAllObjects(clase, result);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+            logger.error(e);
 		}
 		return findAllList;
 	}
