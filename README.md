@@ -1,31 +1,40 @@
 <img src="readmeStyle/yayForJComplete.png" align="right" />
-# YayForJ-Persistence [![yayForJicon](readmeStyle/yayForJMini.png)](https://github.com/julidr/YayForJ-Persistence)
+
+# YayForJ-Persistence 
+
+[![yayForJicon](readmeStyle/yayForJMini.png)](https://github.com/julidr/YayForJ-Persistence)
 >DAO generico en el cual solo se requiere implementar una clase abstracta.
 
 ![Works](readmeStyle/works.PNG)
+
+## Tabla de Contenidos
+* [Requerimientos](#requerimientos)
+* [Precauciones](#precauciones)
+* [Funcionamiento](#funcionamiento)
+* [Mejoras y Contacto](#mejoras-y-contacto)
 
 ## Requerimientos [![yayForJicon2](readmeStyle/yayForJDependencyMini.png)](https://github.com/julidr/YayForJ-Persistence/blob/master/pom.xml)
 Muchos de los requerimientos ya vienen incluidos en el POM del proyecto, asi que si pueden abrir el proyecto como un proyecto Maven lo más seguro es que les descargue de una vez las dependencias. En cualquier caso dejo el listado:
 
 * Mysql-Connector-Java
   * Version: 5.1.6
+* Log4j
+    * Version: 1.2.17
+* Junit
+    * Version: 4.12
 
 ## Precauciones [![yayForJicon5](readmeStyle/alertMini.png)](https://github.com/julidr/YayForJ-Persistence)
 
 * Solo Funciona con MySQL
- * El DAO generico fue pensando para que funcionara con MySQL.
+    <i><br>El DAO generico fue pensando para que funcionara con MySQL.</i>
  
-* Las anotaciones Entity, Table y ID son Obligatorias.
- * Para que el programa logre reconocer cuales son las clases que representan el modelo, estas deben tener las anotaciones indicadas.
-
-* Los atributos deben llamarse igual tanto en la clase como en la base de datos
- * Los atributos del objeto modelo deben tener los mismos nombres que los atributos de la base de datos. Recomiendo que Intenten usar los nombres de atributos en estilo de documentación Java, es decir, con Mayusculas para separar palabras "idUsuario" y no "id_usuario".
-
-* Esta pensando para bases de datos con id auto incremental
- * El programa funciona de tal forma que no tienen que colocarle ningun valor al atributo de id del objeto, ya que se supone que la base de datos deberia tener este campo como auto incremental.
+* Las anotaciones Entity, Table, ID y Column son Obligatorias.
+    <i><br>Para que el programa logre reconocer cuales son las clases que representan el modelo, estas deben tener las anotaciones indicadas.</i>
 
 * Para las inserciones en la base procuren no dejar atributos vacios excepto el id.
- * Es algo a mejorar a futuro, pero por ahora procuren no dejar el objeto a insertar con alguno de sus atributos vacios. El unico que puede y debe estar vacio es el id.
+    <i><br>Es algo a mejorar a futuro, pero por ahora procuren no dejar el objeto a insertar con alguno de sus atributos vacios. El unico que puede y debe estar vacio es el id en caso de ser Autoincremental.</i>
+
+* Las clases que reflejan el Modelo solo deben tener los campos que existen en la base de datos.
 
 ## Funcionamiento [![yayForJicon4](readmeStyle/yayForJCodeMini.png)](https://github.com/julidr/YayForJ-Persistence/blob/master/yaytest.sql)
 
@@ -35,71 +44,79 @@ Lo primero que se debe hacer para poder utilizar el proyecto de manera correcta,
 @Entity
 @Table(name="trainers")
 public class Trainer {
-	
-	@Id private int id;
-	private String name;
-	private String lastname;
-	private int age;
-	private Date birthday;
-	
-	public int getId() {
-		return id;
-	}
-	
-	public void setId(int id) {
-		this.id = id;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public String getLastname() {
-		return lastname;
-	}
-	
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
-	
-	public int getAge() {
-		return age;
-	}
-	
-	public void setAge(int age) {
-		this.age = age;
-	}
-	
-	public Date getBirthday() {
-		return birthday;
-	}
-	
-	public void setBirthday(Date birthday) {
-		this.birthday = birthday;
-	}
 
-	@Override
-	public String toString() {
-		return "Trainer [id=" + id + ", name=" + name + ", lastname=" + lastname + ", age=" + age + ", birthday="
-				+ birthday + "]";
-	}
+    @Id(isAutoincremental = true, name = "id")
+    private int id;
+    @Column(name = "name")
+    private String name;
+    @Column(name = "lastname")
+    private String lastname;
+    @Column(name = "age")
+    private int age;
+    @Column(name = "birthday")
+    private Date birthday;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    @Override
+    public String toString() {
+        return "Trainer [id=" + id + ", name=" + name + ", lastname=" + lastname + ", age=" + age + ", birthday="
+                + birthday + "]";
+    }
 }
 ```
 Lo destacable de esta clase son sus anotaciones:
 
 * Entity
- * Esta anotación le indica al programa, que es la representante de una entidad en la base de datos. Si no se coloca se lanzara una excepción.
+    <i><br>Esta anotación le indica al programa, que es la representante de una entidad en la base de datos. Si no se coloca se lanzara una excepción.</i>
 
 * Table
- * Esta anotación le indica el nombre de la tabla en la base de datos. En este caso, pese a que la clase se llama Trainer, en la base de datos, la tabla va en plurar y se llama trainers. Por lo que se indica el nombre de la tabla para buscar la referencia correcta. Si falta esta anotación el programa lanza una excepcion.
+    <i><br>Esta anotación le indica el nombre de la tabla en la base de datos. En este caso, pese a que la clase se llama Trainer, en la base de datos, la tabla va en plural y se llama trainers. Por lo que se indica el nombre de la tabla para buscar la referencia correcta. Si falta esta anotación el programa lanza una excepcion.</i>
 
 * Id
- * Esta anotación le indica al programa quien es el id de la clase. Si falta esta anotacion el programa lanza una excepcion.
- 
+    <i><br>Esta anotación le indica al programa quien es el id de la clase, ademas el nombre de la columna que lo contiene. Si falta esta anotacion el programa lanza una excepcion.</i>
+
+* Column
+    <i><br>Indica como se llama la columna en la base de datos. Debe agregarsele a todos los campos de la clase.</i>
+
 Una vez el modelo esta hecho (y asumiendo que la base de datos tambien) se debe crear la instancia de la clase yayPersistence y mandar los datos necesarios de la base de datos, tales como la referencia, el usuario y contraseña, para establecer la conexión.
 
 ```sh
@@ -196,24 +213,6 @@ TrainerDAO trainerDAO= new TrainerDAO();
 ```
   El arrayList contiene todos los objetos de Trainer que se encontraron en la base de datos con la referencia en columna y valor dichos. <br>
    <img src="readmeStyle/yayFindByX.PNG"/>
-
-## Contenido del Proyecto [![yayForJicon](readmeStyle/yayForJDependencyMini.png)](https://github.com/julidr/YayForJ-Persistence/tree/master/src/main/java/co/edu/usa/adf/YayForJ_Persistencel)
-El contenido del proyecto es bastante simple, considerando que la mayoria de archivos son generados por eclipse y maven para que el proyecto funcione. Por lo que me limitare a explicar los archivos importantes del proyecto, tales como el Pom, los paquetes y algunas clases.
-
-* Pom.xml
- * Si se encuentran familiarizados con Maven, saben que el pom es el documento en donde se establecen las dependencias del proyecto, el cual va y las busca en el repositorio local para no tener que estar agregando los .jar a cada proyecto. En caso de que la dependencia no se encuentre en el repositorio local, la descarga de internet.
- 
-* Annotation
- * Existe un paquete dentro del proyecto que posee todas las anotaciones hasta el momento. Tales como Entity, Table y Id. <br>
-    <img src="readmeStyle/annotation.PNG" align="center" />
-    
-* Logic
- * El paquete logic trae las clases importantes del proyecto. Posee un AnnotationReader que es la clase encargada de leer las anotaciones de una clase. Tambien incluye el ClassBuilder que es el encargado de construir los objetos dependiendo del tipo de clase que se esta manejando y el YayPersistence que es la encargada de hacer la conexión con la base de datos. <br>
- <img src="readmeStyle/logic.PNG" align="center" />
- 
-* Dao
- * Es el paquete que contiene el DAO generico. El cual es una simple clase abstracta que permite la implementación de metodos tales con FindById, FindAll, Save, Update, Delete y FindByX. <br>
- <img src="readmeStyle/dao.PNG" align="center" />
  
 ## Mejoras y Contacto [![yayForJicon](readmeStyle/yayForJDependencyMini.png)](https://github.com/julidr/YayForJ-Persistence)
 Hay muchas cosas por mejorar para este componente. YayForJ Persistence es solo una parte de un gran framework que se realizo con la ayuda de dos amigos más. Sin embargo, si quieren realizar cualquier tipo de mejora a este componente bien pueden hacerlo. <br><br>
