@@ -13,7 +13,7 @@
 * [Funcionamiento](#funcionamiento)
 * [Mejoras y Contacto](#mejoras-y-contacto)
 
-## Requerimientos [![yayForJicon2](readmeStyle/yayForJDependencyMini.png)](https://github.com/julidr/YayForJ-Persistence/blob/master/pom.xml)
+## Requerimientos
 Muchos de los requerimientos ya vienen incluidos en el POM del proyecto, asi que si pueden abrir el proyecto como un proyecto Maven lo más seguro es que les descargue de una vez las dependencias. En cualquier caso dejo el listado:
 
 * Mysql-Connector-Java
@@ -23,7 +23,7 @@ Muchos de los requerimientos ya vienen incluidos en el POM del proyecto, asi que
 * Junit
     * Version: 4.12
 
-## Precauciones [![yayForJicon5](readmeStyle/alertMini.png)](https://github.com/julidr/YayForJ-Persistence)
+## Precauciones
 
 * Solo Funciona con MySQL
     <i><br>El DAO generico fue pensando para que funcionara con MySQL.</i>
@@ -36,7 +36,7 @@ Muchos de los requerimientos ya vienen incluidos en el POM del proyecto, asi que
 
 * Las clases que reflejan el Modelo solo deben tener los campos que existen en la base de datos.
 
-## Funcionamiento [![yayForJicon4](readmeStyle/yayForJCodeMini.png)](https://github.com/julidr/YayForJ-Persistence/blob/master/yaytest.sql)
+## Funcionamiento
 
 Lo primero que se debe hacer para poder utilizar el proyecto de manera correcta, es crear los modelos que representan las entidades de la base de datos. Para este caso se creara la clase Trainer y haremos el ejemplo del funcionamiento con la base de datos [YayTest](https://github.com/julidr/YayForJ-Persistence/blob/master/yaytest.sql).
 
@@ -141,32 +141,33 @@ TrainerDAO trainerDAO= new TrainerDAO();
 ```
 
 * FindById
- * Recibe el id de un elemento en especifico de la base de datos y devuelve un objeto relacionado con la clase especificada.
+    <i><br>Recibe el id de un elemento en especifico de la base de datos y devuelve un objeto relacionado con la clase especificada.</i>
  ```sh
         Trainer trainer=trainerDAO.findById(1l, Trainer.class);
         System.out.println("nombre: " + trainer.getName());
         System.out.println("apellido: " + trainer.getLastname());
         System.out.println("edad: " + trainer.getAge());
         System.out.println("cumpleaños: " + trainer.getBirthday());
-```
-  El resultado obtenido es efectivamente un objeto de la clase Trainer al cual se le puede acceder a los atributos sin problemas.
+   ```
+El resultado obtenido es efectivamente un objeto de la clase Trainer al cual se le puede acceder a los atributos sin problemas.
   <br>
   <img src="readmeStyle/yayFindById.PNG"/>
 
 * FindAll
- * Devuelve un ArrayList de objetos segun la clase especificada.
-  ```sh
+    <i><br>Devuelve un ArrayList de objetos segun la clase especificada.</i>
+ 
+ ```sh
 	ArrayList<Trainer> trainersList=trainerDAO.findAll(Trainer.class);
         System.out.println("Tamaño: " + trainersList.size());
         for(int i=0; i<trainersList.size(); i++){
         	System.out.println(trainersList.get(i));
         }
-```
+   ```
   El arrayList contiene todos los objetos de Trainer que se encontraron en la base de datos. Y gracias al toString que se implemento en la clase modelo, se pueden visualizar sin problemas. <br>
    <img src="readmeStyle/yayFindAll.PNG"/>
    
 * Save
- * Permite insertar un objeto de una clase en especifico a la base de datos.
+    <i><br>Permite insertar un objeto de una clase en especifico a la base de datos.</i>
  ```sh
       Trainer trainer2= new Trainer();
         trainer2.setName("Natalia");
@@ -182,7 +183,7 @@ TrainerDAO trainerDAO= new TrainerDAO();
   <img src="readmeStyle/dataBaseAll.PNG"/>
   
 * Update
- * Permite actualizar un objeto de una clase en especifico a la base de datos.
+    <i><br>Permite actualizar un objeto de una clase en especifico a la base de datos.</i>
  ```sh
 	trainer.setName("Juli");
         trainerDAO.update(trainer, Trainer.class);
@@ -193,7 +194,7 @@ TrainerDAO trainerDAO= new TrainerDAO();
   <img src="readmeStyle/dataBaseUpdate.PNG"/>
   
 * Delete
- * Permite eliminar un objeto de una clase en especifico de la base de datos.
+    <i><br>Permite eliminar un objeto de una clase en especifico de la base de datos.</i>
  ```sh
 	trainerDAO.delete(trainer, Trainer.class);
 ```
@@ -203,8 +204,8 @@ TrainerDAO trainerDAO= new TrainerDAO();
   <img src="readmeStyle/dataBaseAll.PNG"/>
   
 * FindByX
- * Devuelve un ArrayList de objetos segun la clase, columna y valor especificados.
-  ```sh
+    <i><br>Devuelve un ArrayList de objetos segun la clase, columna y valor especificados.</i>
+ ```sh
 	ArrayList<Trainer> trainersList2=trainerDAO.findByX(Trainer.class, "name", "Juliana");
         System.out.println("Tamaño: " + trainersList2.size());
         for(int i=0; i<trainersList2.size(); i++){
@@ -214,7 +215,7 @@ TrainerDAO trainerDAO= new TrainerDAO();
   El arrayList contiene todos los objetos de Trainer que se encontraron en la base de datos con la referencia en columna y valor dichos. <br>
    <img src="readmeStyle/yayFindByX.PNG"/>
  
-## Mejoras y Contacto [![yayForJicon](readmeStyle/yayForJDependencyMini.png)](https://github.com/julidr/YayForJ-Persistence)
+## Mejoras y Contacto
 Hay muchas cosas por mejorar para este componente. YayForJ Persistence es solo una parte de un gran framework que se realizo con la ayuda de dos amigos más. Sin embargo, si quieren realizar cualquier tipo de mejora a este componente bien pueden hacerlo. <br><br>
 Mi email de contacto es juli.milena@hotmail.com por si quieren discutir cualquier cosa del proyecto. <br><br>
 En un futuro subire tanto el modulo, como el Framework completo a Maven Central para que puedan descargarlo como una libreria más.
