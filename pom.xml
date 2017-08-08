@@ -4,7 +4,7 @@
 
   <groupId>co.edu.usa.adf</groupId>
   <artifactId>YayForJ-Persistence</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0</version>
   <packaging>jar</packaging>
 
   <name>YayForJ-Persistence</name>

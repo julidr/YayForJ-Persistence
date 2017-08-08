@@ -2,20 +2,36 @@ package co.edu.usa.adf.YayForJ_Persistence.logic;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 
+import co.edu.usa.adf.YayForJ_Persistence.annotation.Column;
 import co.edu.usa.adf.YayForJ_Persistence.annotation.Entity;
 import co.edu.usa.adf.YayForJ_Persistence.annotation.Id;
 import co.edu.usa.adf.YayForJ_Persistence.annotation.Table;
 
 /**Clase encargada de leer las anotaciones Entity, Table e Id de una clase modelo.
  * @author Juliana Diaz
+ * @version 1.0
  * */
 public class AnnotationReader {
 	
-	private boolean isEntity=false;
-	private String tableName="";
-	private boolean hasId=false;
-	private String fieldIdName="";
+	private boolean isEntity;
+	private String tableName;
+	private boolean hasId;
+	private String fieldIdName;
+	private boolean isAutoincremental;
+	private ArrayList<String> columnsName;
+	private boolean hasAllColumns;
+
+	public AnnotationReader(){
+        isEntity=false;
+        tableName="";
+        hasId = false;
+        fieldIdName="";
+        isAutoincremental = false;
+        columnsName = new ArrayList<String>();
+        hasAllColumns = true;
+    }
 	
 	/**Metodo que lee las anotaciones de clase, tales como Entity y Table de una clase modelo.
 	 * Leer un Class<?> y cambia las variables tableName e isEntity por sus valores correspondientes*/
@@ -24,26 +40,28 @@ public class AnnotationReader {
 		for(int i=0; i<classAnnotation.length; i++){
 			if(classAnnotation[i] instanceof Entity){
 				isEntity=true;
-				if(classAnnotation[i+1] instanceof Table){
-					tableName=((Table)classAnnotation[i+1]).name();
-					fieldAnnotationReader(clase);
-				}
-				else{
-					System.out.println(clase.getName());
-					throw new AnnotationException("Class doesn't have a Table Annotation");
-				}
+				try {
+                    if(classAnnotation[i+1] instanceof Table){
+                        tableName=((Table)classAnnotation[i+1]).name();
+                        fieldAnnotationReader(clase);
+                    }
+                    else{
+                        throw new AnnotationException("Class "+clase.getName()+" doesn't have a Table Annotation");
+                    }
+                }catch (ArrayIndexOutOfBoundsException e){
+				    throw new AnnotationException("Class "+clase.getName()+" doesn't have a Table Annotation");
+                }
 				break;
 			}
 			else{
-				System.out.println(clase.getName());
-				throw new AnnotationException("Class doesn't have an Entity Annotation");
+				throw new AnnotationException("Class "+clase.getName()+" doesn't have an Entity Annotation");
 			}
 		}
 	}
 	
-	/**Metodo que lee las anotaciones de campo, tales como Id, de una clase modelo.
+	/**Metodo que lee las anotaciones de campo, tales como Id y Columns, de una clase modelo.
 	 * Es invocado por el metodo classAnnotationReader, recibiendo el mismo Class<?>
-	 * y cambia las variables hasId y fieldIdName por sus respectivos valores.*/
+	 * y cambia las variables hasId, fieldIdName, isAutoincremental y columnsName por sus respectivos valores.*/
 	public void fieldAnnotationReader(Class<?> clase) throws AnnotationException{
 		Field[] fields= clase.getDeclaredFields();
 		for(int i=0; i<fields.length; i++){
@@ -52,12 +70,19 @@ public class AnnotationReader {
 				if(fieldAnnotations[j] instanceof Id){
 					hasId=true;
 					fieldIdName= fields[i].getName();
-				}
-				else{
-					throw new AnnotationException("Table doesn't have an Id");
-				}
+                    isAutoincremental = ((Id)fieldAnnotations[j]).isAutoincremental();
+                    columnsName.add(((Id)fieldAnnotations[j]).name());
+				} else if(fieldAnnotations[j] instanceof Column){
+                    columnsName.add(((Column)fieldAnnotations[j]).name());
+                }
 			}
 		}
+        if(columnsName.size()!=fields.length && hasId==true){
+            hasAllColumns = false;
+            throw new AnnotationException("Some fields in your class "+clase.getName()+" don't have a Column annotation");
+        } else if(hasId==false){
+            throw new AnnotationException("Table doesn't have an Id");
+        }
 	}
 	
 	/**Retorna un String con el nombre de la tabla
@@ -83,6 +108,22 @@ public class AnnotationReader {
 	public String getFieldIdName(){
 		return fieldIdName;
 	}
-	
 
+	/**retorna un booleano con el valor de si el id es o no autoincremental
+     * @return true si el id es autoincremental*/
+	public boolean getIsAutoincremental(){
+	    return isAutoincremental;
+    }
+
+    /**retorna una lista con los nombres de las columnas en la base de datos
+     * @return columnsName*/
+    public ArrayList<String> getColumnsName() {
+        return columnsName;
+    }
+
+    /**retorna un booleano indicando si la clase leida posee todas las anotaciones de Column en sus campos.
+     * @return true si todos los campos tienen la anotación Column*/
+    public boolean getHasAllColumns(){
+        return hasAllColumns;
+    }
 }

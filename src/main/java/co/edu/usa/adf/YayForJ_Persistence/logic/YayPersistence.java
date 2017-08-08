@@ -1,10 +1,13 @@
 package co.edu.usa.adf.YayForJ_Persistence.logic;
 
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**Clase que se encarga de manejar la conexión con JDBC y la base de datos
+ * @author Juliana Diaz
+ * @version 1.0
+ * */
 
 public class YayPersistence {
 	

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 /**Clase que se encarga de construir los metodos basicos de un DAO con la informacion obtenida del
  * Class<?> que se esta manejando.
  * @author Juliana Diaz
+ * @version 1.0
  * */
 public class ClassBuilder {
 	
@@ -35,6 +36,18 @@ public class ClassBuilder {
 	public String getTableName(){
 		return annotationController.getTableName();
 	}
+
+	/**retorna un booleano con el valor de si el id es o no autoincremental
+	 * @return true si el id es autoincremental*/
+	public boolean getIsAutoincremental(){
+		return annotationController.getIsAutoincremenatal();
+	}
+
+	/**retorna una lista con los nombres de las columnas en la base de datos
+	 * @return columnsName*/
+	public ArrayList<String> getColumnsName() {
+		return annotationController.getColumnsName();
+	}
 	
 	/**Metodo que se encarga de crear un objeto basado en el resultado dado por la base de datos.
 	 * Recibe un Class<?> y el ResultSet de JDBC.*/
@@ -45,7 +58,7 @@ public class ClassBuilder {
 			for(int i=0; i<fields.length; i++){
 				Class<?> type= fields[i].getType();
 				Method method= clase.getMethod("set"+transformToUppercase(fields[i].getName()), type);
-				implementsMethod(object, method, result.getString(fields[i].getName()), type.getName());
+				implementsMethod(object, method, result.getString(getColumnsName().get(i)), type.getName());
 			}
 		}
 		return object;
@@ -62,14 +75,14 @@ public class ClassBuilder {
 			for(int i=0; i<fields.length; i++){
 				Class<?> type= fields[i].getType();
 				Method method= clase.getMethod("set"+transformToUppercase(fields[i].getName()), type);
-				implementsMethod(object, method, result.getString(fields[i].getName()), type.getName());
+				implementsMethod(object, method, result.getString(getColumnsName().get(i)), type.getName());
 			}
 			allObjects.add(object);
 		}
 		return allObjects;
 	}
 	
-	/**Metodo que se encarga de construir la setencia SQL para insertar un objeto en la base
+	/**Metodo que se encarga de construir la sentencia SQL para insertar un objeto en la base
 	 * de datos. Recibe un Class<?> y el objeto que se va a insertar y devuelve un String con 
 	 * la sentencia.*/
 	public String createInsert(Class<?> clase, Object object) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
@@ -77,26 +90,45 @@ public class ClassBuilder {
 		String get="get";
 		String sql= "insert into " + getTableName() +"(";
 		for(int j=0; j<fields.length; j++){
-			if(!fields[j].getName().equals(getFieldIdName())){
-				sql=sql+fields[j].getName()+",";
-			}
+			if(getIsAutoincremental()==true){
+			    if(!fields[j].getName().equals(getFieldIdName())){
+                    sql=sql+getColumnsName().get(j)+",";
+                }
+			} else {
+                    sql=sql+getColumnsName().get(j)+",";
+            }
 		}
-		sql=sql.substring(0, sql.length()-1)+")values(";
+        sql=sql.substring(0, sql.length()-1)+")values(";
 		for(int i=0; i<fields.length; i++){
-			if(!fields[i].getName().equals(getFieldIdName())){
-				if(fields[i].getType().getName().equals("java.lang.Boolean")){
-					get="is";
-				}
-				Method method=clase.getMethod(get+transformToUppercase(fields[i].getName()));
-				if(fields[i].getType().getName().equals("java.util.Date")){
-					SimpleDateFormat formatoDelTexto= new SimpleDateFormat("yyyy-mm-dd");
-					String fecha= formatoDelTexto.format(method.invoke(object));
-					sql=sql+"'"+fecha+"',";
-				}
-				else{
-					sql=sql+"'"+method.invoke(object)+"',";
-				}
-			}
+		    if(getIsAutoincremental()==true){
+                if(!fields[i].getName().equals(getFieldIdName())){
+                    if(fields[i].getType().getName().equals("java.lang.Boolean")){
+                        get="is";
+                    }
+                    Method method=clase.getMethod(get+transformToUppercase(fields[i].getName()));
+                    if(fields[i].getType().getName().equals("java.util.Date")){
+                        SimpleDateFormat formatoDelTexto= new SimpleDateFormat("yyyy-mm-dd");
+                        String fecha= formatoDelTexto.format(method.invoke(object));
+                        sql=sql+"'"+fecha+"',";
+                    }
+                    else{
+                        sql=sql+"'"+method.invoke(object)+"',";
+                    }
+                }
+            } else {
+                if(fields[i].getType().getName().equals("java.lang.Boolean")){
+                    get="is";
+                }
+                Method method=clase.getMethod(get+transformToUppercase(fields[i].getName()));
+                if(fields[i].getType().getName().equals("java.util.Date")){
+                    SimpleDateFormat formatoDelTexto= new SimpleDateFormat("yyyy-mm-dd");
+                    String fecha= formatoDelTexto.format(method.invoke(object));
+                    sql=sql+"'"+fecha+"',";
+                }
+                else{
+                    sql=sql+"'"+method.invoke(object)+"',";
+                }
+            }
 		}
 		sql=sql.substring(0, sql.length()-1)+");";
 		return sql;
@@ -110,21 +142,37 @@ public class ClassBuilder {
 		String get="get";
 		String sql= "update " + getTableName() +" set ";
 		for(int i=0; i<fields.length; i++){
-			if(!fields[i].getName().equals(getFieldIdName())){
-				sql=sql+fields[i].getName()+"='";
-				if(fields[i].getType().getName().equals("java.lang.Boolean")){
-					get="is";
-				}
-				Method method=clase.getMethod(get+transformToUppercase(fields[i].getName()));
-				if(fields[i].getType().getName().equals("java.util.Date")){
-					SimpleDateFormat formatoDelTexto= new SimpleDateFormat("yyyy-mm-dd");
-					String fecha= formatoDelTexto.format(method.invoke(object));
-					sql=sql+fecha+"',";
-				}
-				else{
-					sql=sql+method.invoke(object)+"',";
-				}
-			}
+		    if(getIsAutoincremental()==true){
+                if(!fields[i].getName().equals(getFieldIdName())){
+                    sql=sql+getColumnsName().get(i)+"='";
+                    if(fields[i].getType().getName().equals("java.lang.Boolean")){
+                        get="is";
+                    }
+                    Method method=clase.getMethod(get+transformToUppercase(fields[i].getName()));
+                    if(fields[i].getType().getName().equals("java.util.Date")){
+                        SimpleDateFormat formatoDelTexto= new SimpleDateFormat("yyyy-mm-dd");
+                        String fecha= formatoDelTexto.format(method.invoke(object));
+                        sql=sql+fecha+"',";
+                    }
+                    else{
+                        sql=sql+method.invoke(object)+"',";
+                    }
+                }
+            }else {
+                sql=sql+getColumnsName().get(i)+"='";
+                if(fields[i].getType().getName().equals("java.lang.Boolean")){
+                    get="is";
+                }
+                Method method=clase.getMethod(get+transformToUppercase(fields[i].getName()));
+                if(fields[i].getType().getName().equals("java.util.Date")){
+                    SimpleDateFormat formatoDelTexto= new SimpleDateFormat("yyyy-mm-dd");
+                    String fecha= formatoDelTexto.format(method.invoke(object));
+                    sql=sql+fecha+"',";
+                }
+                else{
+                    sql=sql+method.invoke(object)+"',";
+                }
+            }
 		}
 		Method method2= clase.getMethod(get+transformToUppercase(getFieldIdName()));
 		sql=sql.substring(0, sql.length()-1)+" where " +getFieldIdName()+"='"+method2.invoke(object)+"'";

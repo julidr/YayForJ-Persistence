@@ -12,6 +12,11 @@ import co.edu.usa.adf.YayForJ_Persistence.logic.AnnotationException;
 import co.edu.usa.adf.YayForJ_Persistence.logic.ClassBuilder;
 import co.edu.usa.adf.YayForJ_Persistence.logic.YayPersistence;
 
+/**Clase que se encarga de construir los metodos basicos de un DAO con la informacion obtenida del
+ * Class<?> que se esta manejando.
+ * @author Juliana Diaz
+ * @version 1.0
+ * */
 public abstract class DAOGenerator<T> {
 	
 	private ClassBuilder classBuilder= new ClassBuilder();

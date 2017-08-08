@@ -1,5 +1,8 @@
 package co.edu.usa.adf.YayForJ_Persistence.logic;
 
+/**@author Juliana Diaz
+ * @version 1.0
+ * */
 public class AnnotationException extends Exception {
 
 	public AnnotationException() {
