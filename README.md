@@ -2,7 +2,9 @@
 
 # YayForJ-Persistence 
 
-[![yayForJicon](readmeStyle/yayForJMini.png)](https://github.com/julidr/YayForJ-Persistence)
+[![version](https://img.shields.io/badge/version-1.0.1-blue.svg)](https://github.com/julidr/YayForJ-Persistence)
+[![msqlCon](https://img.shields.io/badge/Mysql--Connector--Java-5.1.6-yellowgreen.svg)](https://mvnrepository.com/artifact/mysql/mysql-connector-java/5.1.6)
+[![log4j](https://img.shields.io/badge/log4j-1.2.17-yellowgreen.svg)](https://mvnrepository.com/artifact/log4j/log4j/1.2.17)
 >DAO generico en el cual solo se requiere implementar una clase abstracta.
 
 ![Works](readmeStyle/works.PNG)
