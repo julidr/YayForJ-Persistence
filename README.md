@@ -33,9 +33,6 @@ Muchos de los requerimientos ya vienen incluidos en el POM del proyecto, asi que
 * Las anotaciones Entity, Table, ID y Column son Obligatorias.
     <i><br>Para que el programa logre reconocer cuales son las clases que representan el modelo, estas deben tener las anotaciones indicadas.</i>
 
-* Para las inserciones en la base procuren no dejar atributos vacios excepto el id.
-    <i><br>Es algo a mejorar a futuro, pero por ahora procuren no dejar el objeto a insertar con alguno de sus atributos vacios. El unico que puede y debe estar vacio es el id en caso de ser Autoincremental.</i>
-
 * Las clases que reflejan el Modelo solo deben tener los campos que existen en la base de datos.
 
 ## Funcionamiento
