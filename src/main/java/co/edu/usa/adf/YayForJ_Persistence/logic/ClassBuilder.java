@@ -48,6 +48,12 @@ public class ClassBuilder {
 	public ArrayList<String> getColumnsName() {
 		return annotationController.getColumnsName();
 	}
+
+    /**Retorna un String con el nombre de la columna que tiene el id
+     * @return columnIdName*/
+	public String getColumndIdName(){
+	    return annotationController.getColumnIdName();
+    }
 	
 	/**Metodo que se encarga de crear un objeto basado en el resultado dado por la base de datos.
 	 * Recibe un Class<?> y el ResultSet de JDBC.*/
@@ -175,7 +181,7 @@ public class ClassBuilder {
             }
 		}
 		Method method2= clase.getMethod(get+transformToUppercase(getFieldIdName()));
-		sql=sql.substring(0, sql.length()-1)+" where " +getFieldIdName()+"='"+method2.invoke(object)+"'";
+		sql=sql.substring(0, sql.length()-1)+" where " +getColumndIdName()+"='"+method2.invoke(object)+"'";
 		return sql;
 	}
 	
@@ -196,37 +202,52 @@ public class ClassBuilder {
 	 * Float, Boolean y Date.*/
 	public void implementsMethod(Object nn,Method method,String attribute, String type) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, ParseException{
 		if(type.equals("java.lang.String")){
-			method.invoke(nn,attribute);
+		    if(attribute!=null){
+                method.invoke(nn,attribute);
+            }
 		}
 		else if(type.equals("java.lang.Integer") || type.equals("int") ){
-			int entero= Integer.parseInt(attribute);
-			method.invoke(nn,entero);
+		    if(attribute!=null){
+                int entero= Integer.parseInt(attribute);
+                method.invoke(nn,entero);
+            }
 		}
 		else if(type.equals("java.lang.Character")|| type.equals("char")){
-			char character= attribute.charAt(0);
-			method.invoke(nn,character);
-			
+		    if(attribute!=null){
+                char character= attribute.charAt(0);
+                method.invoke(nn,character);
+            }
 		}
 		else if(type.equals("java.lang.Double") || type.equals("double")){
-			double doble= Double.parseDouble(attribute);
-			method.invoke(nn,doble);
+		    if(attribute!=null){
+                double doble= Double.parseDouble(attribute);
+                method.invoke(nn,doble);
+            }
 		}
 		else if(type.equals("java.lang.Long") || type.equals("long")){
-			long largo= Long.parseLong(attribute);
-			method.invoke(nn, largo);
+		    if(attribute!=null){
+                long largo= Long.parseLong(attribute);
+                method.invoke(nn, largo);
+            }
 		}
 		else if(type.equals("java.lang.Float") || type.equals("float")){
-			float flotante= Float.parseFloat(attribute);
-			method.invoke(nn,flotante);
+		    if(attribute!=null){
+                float flotante= Float.parseFloat(attribute);
+                method.invoke(nn,flotante);
+            }
 		}
 		else if(type.equals("java.lang.Boolean")|| type.equals("boolean") ){
-			boolean booleano= Boolean.parseBoolean(attribute);
-			method.invoke(nn,booleano);
+		    if(attribute!=null){
+                boolean booleano= Boolean.parseBoolean(attribute);
+                method.invoke(nn,booleano);
+            }
 		}
 		else if(type.equals("java.util.Date")){
-			SimpleDateFormat formatoDelTexto= new SimpleDateFormat("yyyy-mm-dd");
-			String fecha= attribute+"";
-			method.invoke(nn,formatoDelTexto.parse(fecha));
+		    if(attribute!=null){
+                SimpleDateFormat formatoDelTexto= new SimpleDateFormat("yyyy-mm-dd");
+                String fecha= attribute+"";
+                method.invoke(nn,formatoDelTexto.parse(fecha));
+            }
 		}
 	}
 	

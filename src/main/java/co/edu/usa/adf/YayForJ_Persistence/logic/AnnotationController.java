@@ -56,4 +56,8 @@ public class AnnotationController {
 	    return annotationReader.getColumnsName();
     }
 
+    public String getColumnIdName(){
+        return annotationReader.getColumnIdName();
+    }
+
 }

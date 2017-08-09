@@ -23,6 +23,7 @@ public class AnnotationReader {
 	private boolean isAutoincremental;
 	private ArrayList<String> columnsName;
 	private boolean hasAllColumns;
+	private String columnIdName;
     final static Logger logger = Logger.getLogger(AnnotationReader.class);
 
 	public AnnotationReader(){
@@ -33,6 +34,7 @@ public class AnnotationReader {
         isAutoincremental = false;
         columnsName = new ArrayList<String>();
         hasAllColumns = true;
+        columnIdName = "";
     }
 	
 	/**Metodo que lee las anotaciones de clase, tales como Entity y Table de una clase modelo.
@@ -76,6 +78,7 @@ public class AnnotationReader {
 					hasId=true;
 					fieldIdName= fields[i].getName();
                     isAutoincremental = ((Id)fieldAnnotations[j]).isAutoincremental();
+                    columnIdName = ((Id)fieldAnnotations[j]).name();
                     columnsName.add(((Id)fieldAnnotations[j]).name());
 				} else if(fieldAnnotations[j] instanceof Column){
                     columnsName.add(((Column)fieldAnnotations[j]).name());
@@ -132,5 +135,9 @@ public class AnnotationReader {
      * @return true si todos los campos tienen la anotación Column*/
     public boolean getHasAllColumns(){
         return hasAllColumns;
+    }
+
+    public String getColumnIdName() {
+        return columnIdName;
     }
 }
