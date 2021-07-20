@@ -5,9 +5,8 @@
 [![version](https://img.shields.io/badge/version-1.0.2-blue.svg)](https://github.com/julidr/YayForJ-Persistence)
 [![msqlCon](https://img.shields.io/badge/Mysql--Connector--Java-5.1.6-yellowgreen.svg)](https://mvnrepository.com/artifact/mysql/mysql-connector-java/5.1.6)
 [![log4j](https://img.shields.io/badge/log4j-1.2.17-yellowgreen.svg)](https://mvnrepository.com/artifact/log4j/log4j/1.2.17)
->DAO generico en el cual solo se requiere implementar una clase abstracta.
 
-![Works](readmeStyle/works.PNG)
+DAO generico en el cual solo se requiere implementar una clase abstracta.
 
 ## Tabla de Contenidos
 * [Requerimientos](#requerimientos)
@@ -150,7 +149,6 @@ TrainerDAO trainerDAO= new TrainerDAO();
    ```
 El resultado obtenido es efectivamente un objeto de la clase Trainer al cual se le puede acceder a los atributos sin problemas.
   <br>
-  <img src="readmeStyle/yayFindById.PNG"/>
 
 * FindAll
     <i><br>Devuelve un ArrayList de objetos segun la clase especificada.</i>
@@ -169,17 +167,15 @@ El resultado obtenido es efectivamente un objeto de la clase Trainer al cual se 
     <i><br>Permite insertar un objeto de una clase en especifico a la base de datos.</i>
  ```sh
       Trainer trainer2= new Trainer();
-        trainer2.setName("Natalia");
-        trainer2.setLastname("Diaz");
+        trainer2.setName("Erza");
+        trainer2.setLastname("Scarlet");
         trainer2.setAge(18);
         SimpleDateFormat formatoDelTexto= new SimpleDateFormat("yyyy-mm-dd");
-        trainer2.setBirthday(formatoDelTexto.parse("1998-10-23"));
+        trainer2.setBirthday(formatoDelTexto.parse("1990-01-01"));
         trainerDAO.save(trainer2, Trainer.class);
 ```
   Si la inserción en la base de datos funciona sin problemas, se muestra la setencia SQL que se implemento para agregar el objeto a la base de datos. <br>
-  <img src="readmeStyle/yaySave.PNG"/> <br>
   Y se puede visualizar la inserción en la base de datos directamente. <br>
-  <img src="readmeStyle/dataBaseAll.PNG"/>
   
 * Update
     <i><br>Permite actualizar un objeto de una clase en especifico a la base de datos.</i>
@@ -188,9 +184,7 @@ El resultado obtenido es efectivamente un objeto de la clase Trainer al cual se 
         trainerDAO.update(trainer, Trainer.class);
 ```
   Si la actualizacion en la base de datos funciona sin problemas, se muestra la setencia SQL que se implemento para actualizar el objeto a la base de datos. <br>
-  <img src="readmeStyle/yayUpdate.PNG"/> <br>
   Y se puede visualizar la actualización en la base de datos directamente. <br>
-  <img src="readmeStyle/dataBaseUpdate.PNG"/>
   
 * Delete
     <i><br>Permite eliminar un objeto de una clase en especifico de la base de datos.</i>
@@ -212,7 +206,6 @@ El resultado obtenido es efectivamente un objeto de la clase Trainer al cual se 
         }
 ```
   El arrayList contiene todos los objetos de Trainer que se encontraron en la base de datos con la referencia en columna y valor dichos. <br>
-   <img src="readmeStyle/yayFindByX.PNG"/>
  
 ## Mejoras y Contacto
 Hay muchas cosas por mejorar para este componente. YayForJ Persistence es solo una parte de un gran framework que se realizo con la ayuda de dos amigos más. Sin embargo, si quieren realizar cualquier tipo de mejora a este componente bien pueden hacerlo. <br><br>
