@@ -161,7 +161,6 @@ El resultado obtenido es efectivamente un objeto de la clase Trainer al cual se 
         }
    ```
   El arrayList contiene todos los objetos de Trainer que se encontraron en la base de datos. Y gracias al toString que se implemento en la clase modelo, se pueden visualizar sin problemas. <br>
-   <img src="readmeStyle/yayFindAll.PNG"/>
    
 * Save
     <i><br>Permite insertar un objeto de una clase en especifico a la base de datos.</i>
