@@ -194,7 +194,6 @@ El resultado obtenido es efectivamente un objeto de la clase Trainer al cual se 
   Si la eliminación en la base de datos funciona sin problemas, se muestra la setencia SQL que se implemento para eliminar el objeto de la base de datos. <br>
   <img src="readmeStyle/dataBaseDelete.PNG"/> <br>
   Y se puede visualizar la Eliminación en la base de datos directamente (Le volvi a cambiar el nombre a Juliana). <br>
-  <img src="readmeStyle/dataBaseAll.PNG"/>
   
 * FindByX
     <i><br>Devuelve un ArrayList de objetos segun la clase, columna y valor especificados.</i>
